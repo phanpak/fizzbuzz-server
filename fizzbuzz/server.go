@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -21,10 +22,16 @@ func NewServer() *Server {
 	}
 }
 
-func (s *Server) Serve() {
+func (s *Server) Serve() error {
 	s.registerRoutes()
 	log.Println("Server is listening on port 8080")
-	http.ListenAndServe(":8080", s.router)
+
+	err := http.ListenAndServe(":8080", s.router)
+	if err != nil {
+		return fmt.Errorf("failed to start server: %w", err)
+	}
+
+	return nil
 }
 
 func (s *Server) registerRoutes() {

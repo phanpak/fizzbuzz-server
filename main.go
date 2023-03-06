@@ -1,10 +1,16 @@
 package main
 
 import (
+	"log"
+
 	"github.com/phanpak/fizzbuzz-server/fizzbuzz"
 )
 
 func main() {
 	s := fizzbuzz.NewServer()
-	s.Serve()
+
+	err := s.Serve()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
