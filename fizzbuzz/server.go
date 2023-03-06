@@ -28,7 +28,7 @@ func (s *Server) Serve() {
 }
 
 func (s *Server) registerRoutes() {
-	s.router.HandleFunc("/fizzbuzz", s.WithStats(s.FizzBuzzHandler()))
+	s.router.HandleFunc("/fizzbuzz", s.withStats(s.fizzBuzzHandler()))
 	s.router.HandleFunc("/stats", s.statsHandler())
 }
 
@@ -44,7 +44,7 @@ type Response struct {
 	Result []string `json:"result"`
 }
 
-func (s *Server) FizzBuzzHandler() http.HandlerFunc {
+func (s *Server) fizzBuzzHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -101,7 +101,7 @@ func (s *Server) statsHandler() http.HandlerFunc {
 	}
 }
 
-func (s *Server) WithStats(next http.HandlerFunc) http.HandlerFunc {
+func (s *Server) withStats(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		requestBody, _ := ioutil.ReadAll(r.Body)
 		r.Body.Close() //  must close

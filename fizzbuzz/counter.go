@@ -9,7 +9,7 @@ type Counter struct {
 }
 
 type Count struct {
-	Count int
+	count int
 	mutex sync.Mutex
 }
 
@@ -24,7 +24,7 @@ func (h *Counter) Increment(key string) {
 		h.hits[key] = hit
 	}
 	hit.mutex.Lock()
-	hit.Count++
+	hit.count++
 	hit.mutex.Unlock()
 }
 
@@ -37,8 +37,8 @@ func (h *Counter) Max() MaxResult {
 	max := MaxResult{"{}", 0}
 	for key, hit := range h.hits {
 		hit.mutex.Lock()
-		if hit.Count > max.Count {
-			max = MaxResult{key, hit.Count}
+		if hit.count > max.Count {
+			max = MaxResult{key, hit.count}
 		}
 		hit.mutex.Unlock()
 	}
